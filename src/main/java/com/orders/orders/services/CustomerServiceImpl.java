@@ -1,16 +1,17 @@
 package com.orders.orders.services;
 
-import com.orders.orders.model.Agent;
 import com.orders.orders.model.Customer;
-import com.orders.orders.repos.AgentRepository;
+import com.orders.orders.model.Order;
 import com.orders.orders.repos.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Transactional
 @Service(value = "customer")
 public class CustomerServiceImpl implements CustomerService {
 
@@ -39,6 +40,7 @@ public class CustomerServiceImpl implements CustomerService {
         return customer;
     }
 
+    @Transactional
     @Override
     public void delete(long id) {
         if(custrepos.findById(id).isPresent()){
@@ -48,6 +50,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     }
 
+    @Transactional
     @Override
     public Customer save(Customer customer) {
         Customer newCustomer = new Customer();
@@ -61,12 +64,14 @@ public class CustomerServiceImpl implements CustomerService {
         newCustomer.setOutstandingamt(customer.getOutstandingamt());
         newCustomer.setPhone(customer.getPhone());
 
+        for(Order o : customer.getOrders()) {
+            newCustomer.getOrders().add(new Order(o.getOrdamount(), o.getAdvanceamount(), o.getCustcode(), o.getOrddescription(), newCustomer));
+        }
 
-
-
-        return null;
+        return custrepos.save(newCustomer);
     }
 
+    @Transactional
     @Override
     public Customer update(Customer customer, long id) {
         return null;
