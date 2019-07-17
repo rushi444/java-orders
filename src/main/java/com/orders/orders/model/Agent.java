@@ -7,7 +7,7 @@ import java.util.List;
 
 @Entity
 @Table(name="Agent")
-public class Agents {
+public class Agent {
     private long agentcode;
 
     private String agentname;
