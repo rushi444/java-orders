@@ -61,11 +61,13 @@ public class CustomerServiceImpl implements CustomerService {
         newCustomer.setGrade(customer.getGrade());
         newCustomer.setOpeningamt(customer.getOpeningamt());
         newCustomer.setRecieveamt(customer.getRecieveamt());
+        newCustomer.setPaymentamt(customer.getPaymentamt());
         newCustomer.setOutstandingamt(customer.getOutstandingamt());
         newCustomer.setPhone(customer.getPhone());
+        newCustomer.setAgent(customer.getAgent());
 
         for(Order o : customer.getOrders()) {
-            newCustomer.getOrders().add(new Order(o.getOrdamount(), o.getAdvanceamount(), o.getCustcode(), o.getOrddescription(), newCustomer));
+            newCustomer.getOrders().add(new Order(o.getOrdamount(), o.getAdvanceamount(), newCustomer, o.getOrddescription()));
         }
 
         return custrepos.save(newCustomer);

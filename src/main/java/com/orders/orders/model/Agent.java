@@ -1,5 +1,7 @@
 package com.orders.orders.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +21,15 @@ public class Agent {
     private String phone;
     private String country;
 
-    @OneToMany(mappedBy = "agent", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "agentcode", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties({"agentcode", "custcode"})
     private List<Customer> customers = new ArrayList<>();
 
-    public Agent(){}
+
+
+    public Agent(){
+
+    }
 
     public Agent(String agentname, String workingarea, double commision, String phone, String country) {
         this.agentname = agentname;

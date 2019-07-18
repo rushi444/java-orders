@@ -1,5 +1,7 @@
 package com.orders.orders.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
@@ -16,18 +18,19 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "custcode", nullable = false)
+    @JsonIgnoreProperties({"custcode", "agentcode"})
     private Customer customer;
 
     public Order(){
 
     }
 
-    public Order(double ordamount, double advanceamount, long custcode, String orddescription, Customer customer) {
+    public Order(double ordamount, double advanceamount, Customer customer, String orddescription) {
         this.ordamount = ordamount;
         this.advanceamount = advanceamount;
-        this.custcode = custcode;
-        this.orddescription = orddescription;
         this.customer = customer;
+        this.orddescription = orddescription;
+
     }
 
     public long getOrdnum() {

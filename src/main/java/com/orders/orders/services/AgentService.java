@@ -5,6 +5,7 @@ import com.orders.orders.model.Agent;
 import java.util.ArrayList;
 
 public interface AgentService {
+
     ArrayList<Agent> findAll();
 
     Agent findAgentById(long id);

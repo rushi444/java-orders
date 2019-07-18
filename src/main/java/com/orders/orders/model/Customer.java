@@ -1,5 +1,7 @@
 package com.orders.orders.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +13,9 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long custcode;
 
+    @Column(nullable = false)
     private String custname;
+
     private String custcity;
     private String workingarea;
     private String custcountry;
@@ -24,16 +28,18 @@ public class Customer {
 
     @ManyToOne
     @JoinColumn(name = "agentcode", nullable = false)
-    private Agent agent;
+    @JsonIgnoreProperties({"agent", "customer"})
+    private Agent agentcode;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "custcode", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties({"agentcode", "custcode"})
     private List<Order> orders = new ArrayList<>();
 
     public Customer(){
 
     }
 
-    public Customer(String custname, String custcity, String workingarea, String custcountry, String grade, double openingamt, double recieveamt, double paymentamt, double outstandingamt, String phone, Agent agent) {
+    public Customer(String custname, String custcity, String workingarea, String custcountry, String grade, double openingamt, double recieveamt, double paymentamt, double outstandingamt, String phone, Agent agentcode) {
         this.custname = custname;
         this.custcity = custcity;
         this.workingarea = workingarea;
@@ -44,7 +50,7 @@ public class Customer {
         this.paymentamt = paymentamt;
         this.outstandingamt = outstandingamt;
         this.phone = phone;
-        this.agent = agent;
+        this.agentcode = agentcode;
     }
 
     public long getCustcode() {
@@ -136,11 +142,11 @@ public class Customer {
     }
 
     public Agent getAgent() {
-        return agent;
+        return agentcode;
     }
 
-    public void setAgent(Agent agent) {
-        this.agent = agent;
+    public void setAgent(Agent agentcode) {
+        this.agentcode = agentcode;
     }
 
     public List<Order> getOrders() {
